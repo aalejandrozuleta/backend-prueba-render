@@ -162,10 +162,10 @@ This project involves the development of an e-commerce platform dedicated to sel
 [Documentación](404)
 
 ## Front-end
-[Front-end](https://github.com/aalejandrozuleta/frontendTest.git)
+[Front-end](https://github.com/aalejandrozuleta/frontendPrueba.git)
 
 ## Database
-[Database](https://github.com/aalejandrozuleta/database-test-render.git)
+[Database](https://github.com/aalejandrozuleta/database-prueba-render.git)
 
 ## 
 ![Logo](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*a6oSE8C5z6SjVtjj.png)
