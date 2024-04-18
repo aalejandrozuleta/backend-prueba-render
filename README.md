@@ -71,10 +71,10 @@ Este proyecto consiste en el desarrollo de una plataforma de comercio electróni
 ```
 
 ## Autor
-- [@aalejandrozuleta](https://github.com/aalejandrozuleta);
+- [@aalejandrozuleta](https://github.com/aalejandrozuleta)
 
 ## Documentación
 [Documentación](404)
 
-![logotipo](https://www.google.com/search?q=typescript+y+express+logos&sca_esv=6b1c5e95a3d0b06b&sca_upv=1&udm=2&biw=1366&bih=681&sxsrf=ACQVn0_l48rvvyrTwjm6O32hBsL8uAOxjA%3A1713472209123&ei=0YIhZu2LB9r8wbkP1-i9kAE&ved=0ahUKEwituO2yzcyFAxVafjABHVd0DxIQ4dUDCBA&uact=5&oq=typescript+y+express+logos&gs_lp=Egxnd3Mtd2l6LXNlcnAiGnR5cGVzY3JpcHQgeSBleHByZXNzIGxvZ29zSJBGULwEWPxEcA14AJABAZgBqwGgAYUfqgEEMS4yOLgBA8gBAPgBAZgCEqACvArCAgoQABiABBhDGIoFwgIFEAAYgATCAgYQABgIGB7CAgcQABiABBgYmAMAiAYBkgcDOS45oAePGQ&sclient=gws-wiz-serp#vhid=bHX8wyfBzFt6LM&vssid=mosaic)
+![logotipo](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*a6oSE8C5z6SjVtjj.png)
 
