@@ -76,5 +76,96 @@ Este proyecto consiste en el desarrollo de una plataforma de comercio electróni
 ## Documentación
 [Documentación](404)
 
-![logotipo](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*a6oSE8C5z6SjVtjj.png)
+## Front-end
+[Front-end](https://github.com/aalejandrozuleta/frontendPrueba.git)
 
+## Database
+[Database](https://github.com/aalejandrozuleta/database-prueba-render.git)
+
+
+# gdGauges (English)
+
+## *Project Description:*
+This project involves the development of an e-commerce platform dedicated to selling accessories for computer and mobile devices. The application provides an intuitive and secure interface that allows users to explore and purchase a wide range of technological products.
+
+## Main Features:
+- **User Roles**: The platform offers two main roles: Business and User.
+- **Product Listing**: A complete catalog of technological accessories with detailed descriptions and prices.
+
+## Technologies Used
+- **Frontend**: Angular
+- **Backend**: Node.js, Express.ts
+- **Database**: MySQL *Stored Procedures*
+- **Authentication and Authorization**: JSON Web Tokens (JWT).
+- **Security**: Data encryption
+
+## Installation
+1. Clone the repository to your local machine.
+2. Install dependencies using `npm install`.
+3. Create the `.env` file.
+4. Configure the `.env` file.
+5. Start the application with `npm run dev`.
+
+## Environment Variables
+1. `JWT_EXPIRES_IN`
+2. `JWT_SECRET`
+3. `DB_HOST`
+4. `DB_USER`
+5. `DB_PASSWORD`
+6. `DB_NAME`
+7. `PORT`
+
+## npm Commands
+- `npm run dev`: Start the server using nodemon, set up for developers.
+- `npm run start`: Start the server using Node.js static method, mainly for deployment.
+- `npm run build`: Build the server from TS to JS.
+
+## Base Structure
+
+```
+└── 📁backendPruebaRender
+    └── .env
+    └── .gitignore
+    └── 📁src
+        └── app.ts
+        └── 📁config
+        └── 📁controllers
+            └── 📁productController
+            └── 📁userController
+        └── 📁doc
+        └── 📁dto
+            └── 📁product
+            └── 📁user
+        └── 📁helpers
+            └── 📁product
+        └── 📁middlewares
+            └── 📁product
+            └── 📁user
+        └── 📁repositories
+        └── 📁routes
+        └── 📁services
+            └── 📁product
+                └── 📁microService
+            └── 📁user
+                └── 📁microService
+        └── 📁test
+            └── 📁product
+            └── 📁user
+    └── tsconfig.json
+```
+
+
+## Author
+- [@aalejandrozuleta](https://github.com/aalejandrozuleta)
+
+## Documentation
+[Documentación](404)
+
+## Front-end
+[Front-end](https://github.com/aalejandrozuleta/frontendTest.git)
+
+## Database
+[Database](https://github.com/aalejandrozuleta/database-test-render.git)
+
+## 
+![Logo](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*a6oSE8C5z6SjVtjj.png)
