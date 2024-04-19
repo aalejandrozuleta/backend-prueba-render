@@ -1,0 +1,9 @@
+{
+  "name_user": "John",
+  "lastName_user": "Doer",
+  "country_user": "United States",
+  "phone_user": "1234567890",
+  "email_user": "johndoer@gmail.com",
+  "password_user": "password123",
+  "user_type": "Usuario"
+}
