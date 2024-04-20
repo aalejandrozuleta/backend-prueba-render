@@ -20,8 +20,34 @@ export default () => ({
       user.password_user,
       user.user_type,
     ];
-    console.log(user);
     
     return db.query(query, values);
   },
+
+  GetLockedUntil: async (user:{email_user: string})=>{
+    const query = "CALL GetLockedUntil(?)";
+    const values = [user.email_user];
+
+    return db.query(query, values);
+  },
+
+  LockAccount: async (user:{email_user: string})=>{
+    const query = "CALL LockAccount(?)";
+    const values = [user.email_user];
+
+    return db.query(query, values);
+  },
+
+  ResetLoginAttempts: async (user:{email_user: string})=>{
+    const query = "CALL ResetLoginAttempts(?)";
+    const values = [user.email_user];
+
+    return db.query(query, values);
+  },
+
+  LoginUser: async (user:{email_user: string}) =>{
+    const query = "CALL LoginUser(?)";
+    const values = [user.email_user];
+    return db.query(query, values);
+  }
 });

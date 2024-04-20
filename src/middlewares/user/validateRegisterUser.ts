@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from "express";
 import { body, validationResult, ValidationChain } from "express-validator";
 
-const userValidationRules: ValidationChain[] = [
+const userValidationRegister: ValidationChain[] = [
   body("name_user")
     .notEmpty()
     .withMessage("El nombre del usuario es requerido")
@@ -65,4 +64,4 @@ const validateUser = (date:any) => {
   }
 };
 
-export { userValidationRules, validateUser };
+export { userValidationRegister, validateUser };
