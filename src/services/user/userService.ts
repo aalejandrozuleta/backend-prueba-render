@@ -8,6 +8,8 @@ import {
 import { generateToken } from "./microService/authService";
 import { registerUserDto } from "./../../dto/user/registerUserDto";
 import { loginUserDto } from "./../../dto/user/loginUserDto";
+import { EmailService } from "./microService/emailService";
+
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -20,6 +22,7 @@ const ERROR_MESSAGES = {
 export default () => {
   const UserRepositories = userRepositories();
   const PasswordService = passwordService();
+  const EmailServices = new EmailService();
 
   return {
     // Función para crear un nuevo usuario
@@ -31,6 +34,9 @@ export default () => {
       const newUser = { ...user, password_user: hashedPassword };
       // Crear el usuario en la base de datos
       const createdUser = await UserRepositories.CreateUser(newUser);
+      // enviar correo de bienvenida
+      await EmailServices.sendWelcomeEmail(user.email_user);
+
       return {
         createdUser,
       };
