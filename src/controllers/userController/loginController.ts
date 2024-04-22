@@ -10,7 +10,7 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    const { user, token } = await userService().loginUser(userData);
+    const {token } = await userService().loginUser(userData);
     // Configuración de la cookie
     res.cookie('jwt', token, {
       httpOnly: true,

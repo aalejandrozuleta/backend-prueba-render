@@ -1,15 +1,22 @@
-// Importamos los repositorios de usuario y los servicios necesarios
+
+//* Importamos los repositorios de usuario y los servicios necesarios
 import userRepositories from "../../repositories/userRepositories";
 import passwordService from "./microService/passwordService";
 import {
   handleIncorrectPassword,
   isAccountLocked,
 } from "./microService/lockService";
+import { generateJWT, verifyJWT } from "./microService/almaceneJwt";
+import { EmailService } from "./microService/emailService";
+import { generateTempCode } from "./microService/generateTempCode";
 import { generateToken } from "./microService/authService";
+
+
+//* DTO
 import { registerUserDto } from "./../../dto/user/registerUserDto";
 import { loginUserDto } from "./../../dto/user/loginUserDto";
-import { EmailService } from "./microService/emailService";
-
+import { validateUserDto } from "../../dto/user/validateUserDto";
+import { forgetPasswordDto } from './../../dto/user/forgetPasswordDto';
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -17,6 +24,8 @@ const ERROR_MESSAGES = {
   CREDENTIALS: "AuthenticationError: Credenciales incorrectas",
   ACCOUNT_LOCKED:
     "AccountLockedError: La cuenta está bloqueada temporalmente. Intente nuevamente más tarde.",
+  INCORRECT_CODE: "AuthenticationError: Código incorrecto",
+  INTERNAL_ERROR: "Error interno en el servidor",
 };
 
 export default () => {
@@ -77,7 +86,59 @@ export default () => {
         const token = generateToken(dbUser.id_user);
         return { user: dbUser, token };
       } catch (error: any) {
-        throw  error;
+        throw error;
+      }
+    },
+
+    searchUser: async (user: validateUserDto) => {
+      try {
+        const [results]: any = await UserRepositories.SearchUser(user);
+        const rows = results[0];
+        if (!rows.length) {
+          throw new Error(ERROR_MESSAGES.CREDENTIALS);
+        }
+
+        // Generar código temporal y actualizar usuario
+        const { code, expiration } = generateTempCode();
+        user.code = code;
+        user.expiration = expiration;
+
+        const token = generateJWT({
+          id: user.id_user,
+          code: user.code,
+          expiration: user.expiration.getTime(), // Convertir la fecha de vencimiento a milisegundos
+        });
+
+        // Enviar correo electrónico con el código de recuperación
+        await EmailServices.sendCodeForgetPassword(user.email_user, user.code, token);
+
+        // Retorna un objeto con el id y el código
+        return { id: user.id_user, code: user.code };
+      } catch (error: any) {
+        throw new Error(
+          `Error buscando usuario: ${ERROR_MESSAGES.CREDENTIALS} `
+        );
+      }
+    },
+
+    forgetPassword: async (user: forgetPasswordDto) => {
+      const decodedToken = verifyJWT(user.token);
+      
+      try {
+        if (user.code === decodedToken.code) {
+          const hashedPassword = await PasswordService.hashPassword(
+            user.password_user
+          );
+          const newUser = { ...decodedToken, password_user: hashedPassword };
+
+          await UserRepositories.ForgetPassword(newUser);
+        } else {
+          throw new Error(ERROR_MESSAGES.CREDENTIALS);
+        }
+      } catch (error: any) {
+        throw new Error(
+          `Error recuperando contraseña: ${ERROR_MESSAGES.INTERNAL_ERROR} `
+        );
       }
     },
   };

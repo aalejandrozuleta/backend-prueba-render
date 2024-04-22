@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import checkDatabaseConnection from './dbHealthCheck';
+import checkDatabaseConnection from "./dbHealthCheck";
 
 // Cargar las variables de entorno desde .env
 dotenv.config();
@@ -14,9 +14,6 @@ app.use(cors());
 // Habilitar el manejo de JSON
 app.use(express.json());
 
-// Configuración del servidor
-const PORT: string | number = process.env.PORT || 8000;
-
 checkDatabaseConnection()
   .then(() => {
     const PORT: string | number = process.env.PORT || 8000;
@@ -24,7 +21,10 @@ checkDatabaseConnection()
       console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
   })
-  .catch(error => {
-    console.error('No se pudo iniciar el servidor debido a un error en la base de datos:', error);
+  .catch((error) => {
+    console.error(
+      "No se pudo iniciar el servidor debido a un error en la base de datos:",
+      error
+    );
   });
 export default app;

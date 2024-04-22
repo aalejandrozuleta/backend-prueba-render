@@ -46,4 +46,20 @@ export class EmailService {
       console.error('Hubo un error al enviar el correo electrónico: ', error);
     }
   }
+
+  async sendCodeForgetPassword(userEmail:string,code:string,token:string) {
+    const mailOptions = {
+      from: 'gdgagues@gmail.com', 
+      to: userEmail, 
+      subject: 'Código de recuperación de contraseña', // Asunto del correo
+      text: `Hemos detectado que deseas cambiar la contraseña de tu cuenta, por favor colócala este código en: Código de accesos: ${token}, Coloca este código código ${code}` 
+    };
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log('Email enviado: ' + info.response);
+    } catch (error) {
+      console.error('Hubo un error al enviar el correo electrónico: ', error);
+    }
+  }
 }

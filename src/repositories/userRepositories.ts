@@ -49,5 +49,17 @@ export default () => ({
     const query = "CALL LoginUser(?)";
     const values = [user.email_user];
     return db.query(query, values);
-  }
+  },
+
+  SearchUser: async (user:{email_user: string, phone_user:string}) =>{
+    const query = ('CALL SearchUser(?,?)');
+    const values = [user.email_user, user.phone_user];
+    return db.query(query, values);
+  },
+
+  ForgetPassword: async (user:{id_user:number, password_user:string}) =>{
+    const query = "CALL ForgetPassword(?,?)";
+    const values = [user.id_user, user.password_user];
+    return db.query(query, values);
+  },
 });

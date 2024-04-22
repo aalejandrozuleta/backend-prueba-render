@@ -8,6 +8,14 @@ import { userValidationRegister } from "../middlewares/user/validateRegisterUser
 import { userValidationLogin } from "../middlewares/user/validateLoginUser";
 import { loginUser } from "../controllers/userController/loginController";
 
+//* -----------validationUser
+import { validationUser } from "../controllers/userController/validationUser";
+import { userValidationForgetPassword } from "../middlewares/user/validateForgetPassword";
+
+//* -----------forgetPassword
+import { forgetPassword } from "../controllers/userController/forgetPassword";
+
+
 /**
  * @route POST /register
  * @description Registrar un nuevo usuario
@@ -22,5 +30,22 @@ router.post("/register", userValidationRegister, registerUser);
  */
 
 router.post("/login", userValidationLogin,loginUser);
+
+/**
+ * @route POST / validationUser
+ * @description Olvidar contraseña
+ * @access Público
+ */
+
+router.post("/validationUser",userValidationForgetPassword,validationUser);
+
+
+/**
+ * @route PUT / Forget Password
+ * @description Olvidar contraseña
+ * @access Público
+ */
+
+router.put("/forget-password",forgetPassword);
 
 export default router;
