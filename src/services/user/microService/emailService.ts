@@ -47,12 +47,12 @@ export class EmailService {
     }
   }
 
-  async sendCodeForgetPassword(userEmail:string,code:string,token:string) {
+  async sendCodeForgetPassword(userEmail:string,code:string) {
     const mailOptions = {
       from: 'gdgagues@gmail.com', 
       to: userEmail, 
       subject: 'Código de recuperación de contraseña', // Asunto del correo
-      text: `Hemos detectado que deseas cambiar la contraseña de tu cuenta, por favor colócala este código en: Código de accesos: ${token}, Coloca este código código ${code}` 
+      text: `Hemos detectado que deseas cambiar la contraseña de tu cuenta, Coloca este código código ${code}` 
     };
 
     try {

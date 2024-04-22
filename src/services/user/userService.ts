@@ -1,4 +1,3 @@
-
 //* Importamos los repositorios de usuario y los servicios necesarios
 import userRepositories from "../../repositories/userRepositories";
 import passwordService from "./microService/passwordService";
@@ -6,17 +5,15 @@ import {
   handleIncorrectPassword,
   isAccountLocked,
 } from "./microService/lockService";
-import { generateJWT, verifyJWT } from "./microService/almaceneJwt";
 import { EmailService } from "./microService/emailService";
 import { generateTempCode } from "./microService/generateTempCode";
 import { generateToken } from "./microService/authService";
-
 
 //* DTO
 import { registerUserDto } from "./../../dto/user/registerUserDto";
 import { loginUserDto } from "./../../dto/user/loginUserDto";
 import { validateUserDto } from "../../dto/user/validateUserDto";
-import { forgetPasswordDto } from './../../dto/user/forgetPasswordDto';
+import { forgetPasswordDto } from "./../../dto/user/forgetPasswordDto";
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -92,54 +89,82 @@ export default () => {
 
     searchUser: async (user: validateUserDto) => {
       try {
+        if (!user) {
+          throw new Error("El usuario no puede ser nulo");
+        }
+
         const [results]: any = await UserRepositories.SearchUser(user);
         const rows = results[0];
+        const dbUser = rows[0];
+
         if (!rows.length) {
           throw new Error(ERROR_MESSAGES.CREDENTIALS);
         }
 
         // Generar código temporal y actualizar usuario
         const { code, expiration } = generateTempCode();
+        if (!code || !expiration) {
+          throw new Error("Error al generar el código temporal");
+        }
+
         user.code = code;
         user.expiration = expiration;
 
-        const token = generateJWT({
-          id: user.id_user,
-          code: user.code,
-          expiration: user.expiration.getTime(), // Convertir la fecha de vencimiento a milisegundos
-        });
+        const newUser = { ...user, id_user: dbUser.id_user };
+
+        const tokenCreationResult = await UserRepositories.CreateToken(newUser);
+        if (!tokenCreationResult) {
+          throw new Error("Error al crear el token para el usuario");
+        }
 
         // Enviar correo electrónico con el código de recuperación
-        await EmailServices.sendCodeForgetPassword(user.email_user, user.code, token);
+        await EmailServices.sendCodeForgetPassword(
+          newUser.email_user,
+          newUser.code
+        );
 
         // Retorna un objeto con el id y el código
-        return { id: user.id_user, code: user.code };
+        return { id: newUser.id_user, newUser: user.code };
       } catch (error: any) {
-        throw new Error(
-          `Error buscando usuario: ${ERROR_MESSAGES.CREDENTIALS} `
-        );
+        throw new Error(`Error buscando usuario: ${ERROR_MESSAGES.AUTHENTICATION}`);
       }
     },
 
     forgetPassword: async (user: forgetPasswordDto) => {
-      const decodedToken = verifyJWT(user.token);
-      
       try {
-        if (user.code === decodedToken.code) {
-          const hashedPassword = await PasswordService.hashPassword(
-            user.password_user
-          );
-          const newUser = { ...decodedToken, password_user: hashedPassword };
+        // Buscar el token en la base de datos
+        const [results]: any = await UserRepositories.FindToken(user);
 
-          await UserRepositories.ForgetPassword(newUser);
-        } else {
-          throw new Error(ERROR_MESSAGES.CREDENTIALS);
+        // Verificar si se encontró un token válido
+        const rows = results[0];
+        
+        if (!rows.length) {
+          // Si no se encuentra ningún token, lanzar un error de código incorrecto
+          throw new Error(ERROR_MESSAGES.INCORRECT_CODE);
         }
+    
+        // Obtener el usuario correspondiente al token
+        const dbUser = rows[0];
+    
+        // Hashear la nueva contraseña
+        const hashedPassword = await PasswordService.hashPassword(user.password_user);
+    
+        // Crear un nuevo objeto de usuario con la contraseña hasheada y el ID del usuario
+        const newUser = {
+          ...user,
+          password_user: hashedPassword,
+          id_user: dbUser.id_user,
+        };
+    
+        // Actualizar la contraseña del usuario
+        await UserRepositories.ForgetPassword(newUser);
+    
+        // Retornar el objeto del usuario actualizado
+        return newUser;
       } catch (error: any) {
-        throw new Error(
-          `Error recuperando contraseña: ${ERROR_MESSAGES.INTERNAL_ERROR} `
-        );
+        throw error;
       }
     },
+    
   };
 };

@@ -13,9 +13,11 @@ export const forgetPassword = async (req: Request, res: Response) => {
   try {
     await userService().forgetPassword(userDataForget);
     res.status(201).json({
-      mensaje: "COntraseña restablecida con éxito", 
+      mensaje: "Contraseña restablecida con éxito", 
     });
   } catch (error:any) {
-
+    res.status(500).json({
+      error: error.message,
+    });
   }
 };
