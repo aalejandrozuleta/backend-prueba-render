@@ -1,21 +1,21 @@
 import { body, validationResult, ValidationChain } from "express-validator";
 
-const userValidationForgetPassword: ValidationChain[] = [
-  body("email_user")
+const userForgetPassword: ValidationChain[] = [
+  body("code")
     .notEmpty()
-    .withMessage("El correo electrónico del usuario es requerido")
-    .isEmail()
-    .withMessage("El correo electrónico no es válido")
-    .isLength({ min: 10, max: 60 })
-    .withMessage("El correo electrónico debe tener como máximo 60 caracteres"),
+    .withMessage("El código de seguridad es requerido")
+    .isLength({ min: 6, max: 6 })
+    .withMessage("El código es de 6 caracteres"),
 
-  body("phone_user")
+  body("password_user")
     .notEmpty()
-    .withMessage("El teléfono del usuario es requerido")
-    .isNumeric()
-    .withMessage("El teléfono del usuario solo debe contener números")
-    .isLength({ max: 10 })
-    .withMessage("El teléfono del usuario debe tener como máximo 10 dígitos"),
+    .withMessage("La contraseña del usuario es requerida")
+    .isLength({ min: 6 })
+    .withMessage("La contraseña debe tener al menos 6 caracteres")
+    .isLength({ max: 100 })
+    .withMessage("La contraseña debe tener como máximo 100 caracteres")
+    .matches(/\d/)
+    .withMessage("La contraseña debe contener al menos un número"),
 ];
 
 const validateUser = (date: any) => {
@@ -26,4 +26,4 @@ const validateUser = (date: any) => {
   }
 };
 
-export { userValidationForgetPassword, validateUser };
+export { userForgetPassword, validateUser };

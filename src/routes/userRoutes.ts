@@ -10,10 +10,12 @@ import { loginUser } from "../controllers/userController/loginController";
 
 //* -----------validationUser
 import { validationUser } from "../controllers/userController/validationUser";
-import { userValidationForgetPassword } from "../middlewares/user/validateForgetPassword";
+import { userValidationValidation } from "../middlewares/user/validateValidation";
 
 //* -----------forgetPassword
 import { forgetPassword } from "../controllers/userController/forgetPassword";
+import { userForgetPassword } from "../middlewares/user/validateForgetPassword";
+
 
 
 /**
@@ -37,7 +39,7 @@ router.post("/login", userValidationLogin,loginUser);
  * @access Público
  */
 
-router.post("/validationUser",userValidationForgetPassword,validationUser);
+router.post("/validationUser",userValidationValidation,validationUser);
 
 
 /**
@@ -46,6 +48,6 @@ router.post("/validationUser",userValidationForgetPassword,validationUser);
  * @access Público
  */
 
-router.put("/forget-password",forgetPassword);
+router.put("/forget-password",userForgetPassword,forgetPassword);
 
 export default router;
