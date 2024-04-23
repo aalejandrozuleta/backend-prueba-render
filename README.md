@@ -74,7 +74,7 @@ Este proyecto consiste en el desarrollo de una plataforma de comercio electróni
 - [@aalejandrozuleta](https://github.com/aalejandrozuleta)
 
 ## Documentación
-[Documentación](404)
+[Documentación](https://www.notion.so/Documentaci-n-392f0951216c42df8b88c5237dde1ac2)
 
 ## Front-end
 [Front-end](https://github.com/aalejandrozuleta/frontendPrueba.git)
