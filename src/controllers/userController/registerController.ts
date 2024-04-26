@@ -1,8 +1,7 @@
-import { validationResult } from 'express-validator';
+import { validationResult } from "express-validator";
 import userService from "../../services/user/userService";
-import { registerUserDto } from "./../../dto/user/registerUserDto";
+import { registerUserDto } from "../../interface/user/registerUserDto";
 import { Request, Response } from "express";
-
 
 export const registerUser = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -11,7 +10,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 
   const userData: registerUserDto = req.body;
-  
+
   try {
     await userService().createUser(userData);
     res.status(200).json({
