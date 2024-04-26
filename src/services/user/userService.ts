@@ -8,12 +8,14 @@ import {
 import { EmailService } from "./microService/emailService";
 import { generateTempCode } from "./microService/generateTempCode";
 import { generateToken } from "./microService/authService";
+import { verifyToken } from "./microService/verifyToken";
 
 //* DTO
 import { registerUserDto } from "./../../dto/user/registerUserDto";
 import { loginUserDto } from "./../../dto/user/loginUserDto";
 import { validateUserDto } from "../../dto/user/validateUserDto";
 import { forgetPasswordDto } from "./../../dto/user/forgetPasswordDto";
+import { changePasswordDto } from "./../../dto/user/changePasswordDto";
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -79,8 +81,10 @@ export default () => {
         await UserRepositories.ResetLoginAttempts({
           email_user: user.email_user,
         });
+
         // Generar un token de acceso para el usuario autenticado
-        const token = generateToken(dbUser.id_user);
+        const token = generateToken(dbUser.id_user,user.email_user);
+
         return { user: dbUser, token };
       } catch (error: any) {
         throw error;
@@ -126,7 +130,9 @@ export default () => {
         // Retorna un objeto con el id y el código
         return { id: newUser.id_user, newUser: user.code };
       } catch (error: any) {
-        throw new Error(`Error buscando usuario: ${ERROR_MESSAGES.AUTHENTICATION}`);
+        throw new Error(
+          `Error buscando usuario: ${ERROR_MESSAGES.AUTHENTICATION}`
+        );
       }
     },
 
@@ -137,34 +143,73 @@ export default () => {
 
         // Verificar si se encontró un token válido
         const rows = results[0];
-        
+
         if (!rows.length) {
           // Si no se encuentra ningún token, lanzar un error de código incorrecto
           throw new Error(ERROR_MESSAGES.INCORRECT_CODE);
         }
-    
+
         // Obtener el usuario correspondiente al token
         const dbUser = rows[0];
-    
+
         // Hashear la nueva contraseña
-        const hashedPassword = await PasswordService.hashPassword(user.password_user);
-    
+        const hashedPassword = await PasswordService.hashPassword(
+          user.password_user
+        );
+
         // Crear un nuevo objeto de usuario con la contraseña hasheada y el ID del usuario
         const newUser = {
           ...user,
           password_user: hashedPassword,
           id_user: dbUser.id_user,
         };
-    
+
         // Actualizar la contraseña del usuario
         await UserRepositories.ForgetPassword(newUser);
-    
+
         // Retornar el objeto del usuario actualizado
         return newUser;
       } catch (error: any) {
         throw error;
       }
     },
-    
+
+    changePassword: async (user: changePasswordDto, token: string) => {
+      try {
+        const decoded: any = verifyToken(token);
+        const [results]: any = await UserRepositories.FindUserId(decoded.id);
+        const dbUser = results[0][0];
+
+        if (
+          !(await PasswordService.comparePassword(
+            user.password_user,
+            dbUser.password_user
+          ))
+        ) {
+          throw new Error("La contraseña actual es incorrecta.");
+        }
+
+        // Comprueba si la nueva contraseña es igual a la contraseña actual antes de hashearla
+        if (user.newPassword === user.password_user) {
+          throw new Error(
+            "La nueva contraseña no debe ser igual a la contraseña actual."
+          );
+        }
+
+        const newPasswordHash = await PasswordService.hashPassword(
+          user.newPassword
+        );
+
+        const newUser = { id_user: decoded.id, newPassword: newPasswordHash };
+
+        await UserRepositories.ChangePassword(newUser);
+
+        await EmailServices.sendChangePassword(decoded.email);
+
+        return { message: "Contraseña actualizada con éxito." };
+      } catch (error: any) {
+        throw error;
+      }
+    },
   };
 };
