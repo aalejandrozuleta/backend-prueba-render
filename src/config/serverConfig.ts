@@ -2,11 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import checkDatabaseConnection from "./dbHealthCheck";
+import cookieParser from 'cookie-parser';
 
 // Cargar las variables de entorno desde .env
 dotenv.config();
 
 const app = express();
+
+// Configuración de cookies
+app.use(cookieParser());
 
 // Habilitar CORS para todas las rutas
 app.use(cors());
