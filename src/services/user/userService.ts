@@ -11,11 +11,11 @@ import { generateToken } from "./microService/authService";
 import { verifyToken } from "./microService/verifyToken";
 
 //* DTO
-import { registerUserDto } from "./../../dto/user/registerUserDto";
-import { loginUserDto } from "./../../dto/user/loginUserDto";
-import { validateUserDto } from "../../dto/user/validateUserDto";
-import { forgetPasswordDto } from "./../../dto/user/forgetPasswordDto";
-import { changePasswordDto } from "./../../dto/user/changePasswordDto";
+import { registerUserDto } from "../../interface/user/registerUserDto";
+import { loginUserDto } from "../../interface/user/loginUserDto";
+import { validateUserDto } from "../../interface/user/validateUserDto";
+import { forgetPasswordDto } from "../../interface/user/forgetPasswordDto";
+import { changePasswordDto } from "../../interface/user/changePasswordDto";
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -83,7 +83,7 @@ export default () => {
         });
 
         // Generar un token de acceso para el usuario autenticado
-        const token = generateToken(dbUser.id_user,user.email_user);
+        const token = generateToken(dbUser.id_user, user.email_user);
 
         return { user: dbUser, token };
       } catch (error: any) {
