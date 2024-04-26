@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const generateToken = (userId: string): string => {
+export const generateToken = (userId: string,email:string): string => {
   const secret = process.env.JWT_SECRET;
   const expiresIn = process.env.JWT_EXPIRES_IN;
 
@@ -12,5 +12,5 @@ export const generateToken = (userId: string): string => {
     throw new Error('JWT expiration time not found in environment variables.');
   }
 
-  return jwt.sign({ id: userId }, secret, { expiresIn });
+  return jwt.sign({ id: userId, email: email }, secret, { expiresIn });
 };

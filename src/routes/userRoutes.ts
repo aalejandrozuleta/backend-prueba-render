@@ -16,6 +16,9 @@ import { userValidationValidation } from "../middlewares/user/validateValidation
 import { forgetPassword } from "../controllers/userController/forgetPassword";
 import { userForgetPassword } from "../middlewares/user/validateForgetPassword";
 
+//* -----------changePassword
+import { changePassword } from "../controllers/userController/changePassword";
+import { userChangePassword } from "../middlewares/user/validateChangePassword";
 
 
 /**
@@ -49,5 +52,13 @@ router.post("/validationUser",userValidationValidation,validationUser);
  */
 
 router.put("/forget-password",userForgetPassword,forgetPassword);
+
+/**
+ * @route PUT / changePassword
+ * @description Cambiar la contraseña
+ * @access Público
+ */
+
+router.put("/changePassword",userChangePassword,changePassword);
 
 export default router;

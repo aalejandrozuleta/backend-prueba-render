@@ -62,4 +62,20 @@ export class EmailService {
       console.error('Hubo un error al enviar el correo electrónico: ', error);
     }
   }
+
+  async sendChangePassword(userEmail:string) {
+    const mailOptions = {
+      from: 'gdgagues@gmail.com', 
+      to: userEmail, 
+      subject: 'Cambio de contraseña', // Asunto del correo
+      text: `El cambio de contraseña a sido exitoso` 
+    };
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log('Email enviado: ' + info.response);
+    } catch (error) {
+      console.error('Hubo un error al enviar el correo electrónico: ', error);
+    }
+  }
 }
