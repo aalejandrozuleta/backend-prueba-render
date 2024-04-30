@@ -6,9 +6,9 @@ import {
   isAccountLocked,
 } from "./microService/lockService";
 import { EmailService } from "./microService/emailService";
-import { generateTempCode } from "./microService/generateTempCode";
-import { generateToken } from "./microService/authService";
-import { verifyToken } from "./microService/verifyToken";
+import { generateTempCode } from "../../helpers/generateTempCode";
+import { generateToken } from "../../helpers/genereToken";
+import { verifyToken } from "../../helpers/verifyToken";
 
 //* DTO
 import { registerUserDto } from "../../interface/user/registerUserDto";
