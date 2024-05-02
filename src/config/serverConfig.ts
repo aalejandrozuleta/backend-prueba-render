@@ -16,7 +16,8 @@ app.use(cookieParser());
 app.use(cors({
   origin: 'https://frontend-prueba-three.vercel.app', // Aquí va la URL de tu sitio web
   methods: ['GET', 'POST', 'PUT'], // Los métodos HTTP permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'] // Los encabezados permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Los encabezados permitidos
+  credentials: true
 }));
 
 // Habilitar el manejo de JSON
