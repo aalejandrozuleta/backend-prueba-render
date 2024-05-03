@@ -1,11 +1,8 @@
 //* Importamos los repositorios de usuario y los servicios necesarios
 import userRepositories from "../../repositories/userRepositories";
-import passwordService from "./microService/passwordService";
-import {
-  handleIncorrectPassword,
-  isAccountLocked,
-} from "./microService/lockService";
-import { EmailService } from "./microService/emailService";
+import passwordService from "./utils/passwordService";
+import { handleIncorrectPassword, isAccountLocked } from "./utils/lockService";
+import { EmailService } from "../../helpers/emailService";
 import { generateTempCode } from "../../helpers/generateTempCode";
 import { generateToken } from "../../helpers/genereToken";
 import { verifyToken } from "../../helpers/verifyToken";
@@ -81,10 +78,8 @@ export default () => {
         await UserRepositories.ResetLoginAttempts({
           email_user: user.email_user,
         });
-
         // Generar un token de acceso para el usuario autenticado
-        const token = generateToken(dbUser.id_user, user.email_user);
-
+        const token = generateToken(dbUser.id_user, user.email_user, dbUser.user_type);
         return { user: dbUser, token };
       } catch (error: any) {
         throw error;
