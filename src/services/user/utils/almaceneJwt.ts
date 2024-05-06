@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 const JWT_SECRET = 'bV2uQmx7eV9wRjJnZVZuM3hNcFh6ZlF3'; 
 
 export function generateJWT(data: any): string {
