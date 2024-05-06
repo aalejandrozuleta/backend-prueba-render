@@ -1,5 +1,5 @@
 import { createCompanyDto } from "./../interface/company/createCompany";
-import db from "../config/bdConfig";
+import db from "../config/mysqlConfig";
 export default () => ({
   CreateCompany: async (company: createCompanyDto, id_user: number) => {
     console.log({ company: company, id: id_user });

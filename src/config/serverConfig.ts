@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import checkDatabaseConnection from "./dbHealthCheck";
 import cookieParser from 'cookie-parser';
+import helmet from "helmet";
+
 
 // Cargar las variables de entorno desde .env
 dotenv.config();
@@ -17,6 +19,13 @@ app.use(cors());
 
 // Habilitar el manejo de JSON
 app.use(express.json());
+
+// Habilitar helmet
+app.use(helmet());
+
+// Deshabilitar a¿las huellas digitales
+app.disable('x-powered-by')
+
 
 checkDatabaseConnection()
   .then(() => {

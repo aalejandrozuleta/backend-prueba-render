@@ -1,4 +1,4 @@
-import db from "../config/bdConfig";
+import db from "../config/mysqlConfig";
 
 export default () => ({
   CreateUser: async (user: {
@@ -79,15 +79,15 @@ export default () => ({
     return db.query(query, values);
   },
 
-  FindUserId:async (user:{id_user:number})=>{
+  FindUserId: async (user: { id_user: number }) => {
     const query = "CALL FindUserById(?)";
     const values = [user];
     return db.query(query, values);
   },
 
-  ChangePassword: async (user:{id_user:number; newPassword:string; }) =>{
+  ChangePassword: async (user: { id_user: number; newPassword: string }) => {
     const query = "CALL ChangePassword (?,?)";
     const values = [user.id_user, user.newPassword];
     return db.query(query, values);
-  }
+  },
 });
