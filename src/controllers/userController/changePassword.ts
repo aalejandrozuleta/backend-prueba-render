@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import userService from "../../services/user/userService";
 import getTokenFromRedis from "../../helpers/getTokenRedis";
+import { deleteTokenFromRedis } from "../../helpers/deleteTokenFromRedis";
 
 
 export const changePassword = async (req: Request, res: Response) => {
@@ -14,17 +15,20 @@ export const changePassword = async (req: Request, res: Response) => {
   }
 
   const isToken = await getTokenFromRedis(token);
-  
+
   try {
     if (!isToken) {
       // Manejar el caso donde el token no se encuentra en Redis
-      return res.status(401).json({ error: 'Token no encontrado en Redis' });
+      return res.status(401).json({ error: "Token no encontrado en Redis" });
     }
 
     await userService().changePassword(userData, isToken);
     res.status(200).json({
       mensaje: "Contraseña cambiada con éxito",
     });
+
+    // Borrar el token de la base de datos después de un cambio exitoso de contraseña
+    await deleteTokenFromRedis(token);
   } catch (error: any) {
     res.status(500).json({
       error: error.message,
