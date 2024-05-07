@@ -78,4 +78,20 @@ export class EmailService {
       console.error('Hubo un error al enviar el correo electrónico: ', error);
     }
   }
+
+  async sendWelcomeCompany (companyEmail: string) {
+    const mailOptions = {
+      from: 'gdgagues@gmail.com', 
+      to: companyEmail, 
+      subject: 'Empresa creada', // Asunto del correo
+      text: `Se ah creado la empresa con éxito, felicitaciones` 
+    };
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log('Email enviado: ' + info.response);
+    } catch (error) {
+      console.error('Hubo un error al enviar el correo electrónico: ', error);
+    }
+  }
 }
