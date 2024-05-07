@@ -7,10 +7,9 @@ const saveTokenToRedis = async (userId: string, token: string) => {
     const stringToken = token.toString();
 
     // Asegurar tiempo de expiración numérico
-    const expirationSeconds = parseInt('3600'); // Suponiendo que 3600 es una cadena de texto
+    const expirationSeconds = parseInt('3600'); 
 
     const result = await client.set(stringUserId, stringToken, { EX: expirationSeconds });
-    console.info({ message: 'Token guardado exitosamente', userId, token });
 
     if (!result) {
       throw new Error('Error guardando token en Redis');

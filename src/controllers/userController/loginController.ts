@@ -13,11 +13,17 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { user,token } = await userService().loginUser(userData);
     
+    res.cookie('userId', user.id_user, {
+      httpOnly: true, // La cookie solo es accesible a través de HTTP (no desde JavaScript)
+      secure: true, // La cookie solo se enviará a través de conexiones HTTPS
+      maxAge: 3600000, 
+    });
+    
     await saveTokenToRedis(user.id_user, token);
     res.status(201).json({
       mensaje: "Usuario iniciado con éxito",
     });
   } catch (error: any) {
-    res.status(500).json({ message: 'Error guardando token de sesión' });
+    res.status(500).send(error.message);
   }
 };

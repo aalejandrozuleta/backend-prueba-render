@@ -169,7 +169,7 @@ export default () => {
       }
     },
 
-    changePassword: async (user: changePasswordDto, token: string) => {
+    changePassword: async (user: changePasswordDto, token:string) => {
       try {
         const decoded: any = verifyToken(token);
         const [results]: any = await UserRepositories.FindUserId(decoded.id);
