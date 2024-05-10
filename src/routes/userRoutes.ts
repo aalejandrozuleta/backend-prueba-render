@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 const router: Router = express.Router();
+import { jwtAuthMiddleware } from "../middlewares/logic/jwtAuth";
+
 //* -----------registerUser
 import { registerUser } from "../controllers/userController/registerController";
 import { userValidationRegister } from "../middlewares/validation/user/validateRegisterUser";
@@ -42,7 +44,7 @@ router.post("/login", userValidationLogin,loginUser);
  * @access Público
  */
 
-router.post("/validationUser",userValidationValidation,validationUser);
+router.post("/validationUser",jwtAuthMiddleware,userValidationValidation,validationUser);
 
 
 /**
@@ -59,6 +61,6 @@ router.put("/forget-password",userForgetPassword,forgetPassword);
  * @access Público
  */
 
-router.put("/changePassword",userChangePassword,changePassword);
+router.put("/changePassword",jwtAuthMiddleware,userChangePassword,changePassword);
 
 export default router;
