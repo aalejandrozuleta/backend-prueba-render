@@ -3,23 +3,23 @@ const router: Router = express.Router();
 import { jwtAuthMiddleware } from "../middlewares/logic/jwtAuth";
 
 //* -----------registerUser
-import { registerUser } from "../controllers/userController/registerController";
+import { registerUserController } from "../controllers/userController/registerController";
 import { userValidationRegister } from "../middlewares/validation/user/validateRegisterUser";
 
-//* -----------loginUser
+//* -----------loginUserController
 import { userValidationLogin } from "../middlewares/validation/user/validateLoginUser";
-import { loginUser } from "../controllers/userController/loginController";
+import { loginUserController } from "../controllers/userController/loginController";
 
 //* -----------validationUser
-import { validationUser } from "../controllers/userController/validationUser";
+import { validationUserController } from "../controllers/userController/validationUser";
 import { userValidationValidation } from "../middlewares/validation/user/validateValidation";
 
 //* -----------forgetPassword
-import { forgetPassword } from "../controllers/userController/forgetPassword";
+import { forgetPasswordController } from "../controllers/userController/forgetPassword";
 import { userForgetPassword } from "../middlewares/validation/user/validateForgetPassword";
 
 //* -----------changePassword
-import { changePassword } from "../controllers/userController/changePassword";
+import { changePasswordController } from "../controllers/userController/changePassword";
 import { userChangePassword } from "../middlewares/validation/user/validateChangePassword";
 
 
@@ -28,7 +28,7 @@ import { userChangePassword } from "../middlewares/validation/user/validateChang
  * @description Registrar un nuevo usuario
  * @access Público
  */
-router.post("/register", userValidationRegister, registerUser);
+router.post("/register", userValidationRegister, registerUserController);
 
 /**
  * @route POST /login
@@ -36,7 +36,7 @@ router.post("/register", userValidationRegister, registerUser);
  * @access Público
  */
 
-router.post("/login", userValidationLogin,loginUser);
+router.post("/login", userValidationLogin,loginUserController);
 
 /**
  * @route POST / validationUser
@@ -44,7 +44,7 @@ router.post("/login", userValidationLogin,loginUser);
  * @access Público
  */
 
-router.post("/validationUser",jwtAuthMiddleware,userValidationValidation,validationUser);
+router.post("/validationUser",userValidationValidation,validationUserController);
 
 
 /**
@@ -53,7 +53,7 @@ router.post("/validationUser",jwtAuthMiddleware,userValidationValidation,validat
  * @access Público
  */
 
-router.put("/forget-password",userForgetPassword,forgetPassword);
+router.put("/forget-password",userForgetPassword,forgetPasswordController);
 
 /**
  * @route PUT / changePassword
@@ -61,6 +61,6 @@ router.put("/forget-password",userForgetPassword,forgetPassword);
  * @access Público
  */
 
-router.put("/changePassword",jwtAuthMiddleware,userChangePassword,changePassword);
+router.put("/changePassword",jwtAuthMiddleware,userChangePassword,changePasswordController);
 
 export default router;
