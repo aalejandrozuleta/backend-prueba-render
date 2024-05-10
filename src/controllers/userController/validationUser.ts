@@ -1,16 +1,16 @@
 import { validateUserDto } from "../../interface/user/validateUserDto";
 import { validationResult } from "express-validator";
 import { Request, Response } from "express";
-import userService from "../../services/user/userService";
+import { searchUser } from "../../services/user/searchUser";
 
-export const validationUser = async (req: Request, res: Response) => {
+export const validationUserController = async (req: Request, res: Response) => {
   const userData: validateUserDto = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    await userService().searchUser(userData);
+    await searchUser(userData);
     res.status(201).json({
       mensaje: "Correo enviado con éxito",
     });

@@ -1,9 +1,9 @@
 import { forgetPasswordDto } from "../../interface/user/forgetPasswordDto";
 import { validationResult } from "express-validator";
 import { Request, Response } from "express";
-import userService from "../../services/user/userService";
+import { forgetPassword } from "../../services/user/forgetPassword";
 
-export const forgetPassword = async (req: Request, res: Response) => {
+export const forgetPasswordController = async (req: Request, res: Response) => {
   const userDataForget: forgetPasswordDto = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -11,7 +11,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
   }
 
   try {
-    await userService().forgetPassword(userDataForget);
+    await forgetPassword(userDataForget);
     res.status(201).json({
       mensaje: "Contraseña restablecida con éxito",
     });
