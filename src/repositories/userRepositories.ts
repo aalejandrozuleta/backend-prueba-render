@@ -79,7 +79,7 @@ export default () => ({
     return db.query(query, values);
   },
 
-  FindUserId: async (user: { id_user: number }) => {
+  FindUserId: async (user: { id_user:number }) => {
     const query = "CALL FindUserById(?)";
     const values = [user];
     return db.query(query, values);

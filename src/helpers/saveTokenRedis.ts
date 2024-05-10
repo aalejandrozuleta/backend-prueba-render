@@ -1,15 +1,18 @@
+import jwt from 'jsonwebtoken';
 import { client } from "../config/redisConfig";
 
-const saveTokenToRedis = async (userId: string, token: string) => {
+export const saveTokenToRedis = async (token: string) => {
   try {
-    // Asegurar tipos de cadena para las claves
-    const stringUserId = userId.toString();
+    const decodedToken:any = jwt.decode(token, { complete: true });
+    if (!decodedToken || typeof decodedToken !== 'object' || !decodedToken['payload']['iat']) {
+      throw new Error('Invalid token');
+    }
+
+    const iat = decodedToken['payload']['iat'];
     const stringToken = token.toString();
+    const expirationSeconds = parseInt(process.env.REDIS_EXPIRATION_SECONDS || '3600');
 
-    // Asegurar tiempo de expiración numérico
-    const expirationSeconds = parseInt('3600'); 
-
-    const result = await client.set(stringUserId, stringToken, { EX: expirationSeconds });
+    const result = await client.set(String(iat), stringToken, { EX: expirationSeconds });
 
     if (!result) {
       throw new Error('Error guardando token en Redis');
@@ -19,5 +22,3 @@ const saveTokenToRedis = async (userId: string, token: string) => {
     throw error; // Re-lanzar el error para el controlador
   }
 };
-
-export default saveTokenToRedis;

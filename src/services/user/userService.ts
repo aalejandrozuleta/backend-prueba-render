@@ -169,10 +169,12 @@ export default () => {
       }
     },
 
-    changePassword: async (user: changePasswordDto, token:string) => {
+    changePassword: async (user: changePasswordDto) => {
+      const idUser = user.token.id;
+      const emailUser = user.token.email;
+      
       try {
-        const decoded: any = verifyToken(token);
-        const [results]: any = await UserRepositories.FindUserId(decoded.id);
+        const [results]: any = await UserRepositories.FindUserId(idUser);
         const dbUser = results[0][0];
 
         if (
@@ -195,11 +197,11 @@ export default () => {
           user.newPassword
         );
 
-        const newUser = { id_user: decoded.id, newPassword: newPasswordHash };
+        const newUser = { id_user: idUser, newPassword: newPasswordHash };
 
         await UserRepositories.ChangePassword(newUser);
 
-        await EmailServices.sendChangePassword(decoded.email);
+        await EmailServices.sendChangePassword(emailUser);
 
         return { message: "Contraseña actualizada con éxito." };
       } catch (error: any) {

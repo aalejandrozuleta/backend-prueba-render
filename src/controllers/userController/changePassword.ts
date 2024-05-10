@@ -1,37 +1,33 @@
+// changePassword
+
 import { changePasswordDto } from "../../interface/user/changePasswordDto";
 import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import userService from "../../services/user/userService";
-import getTokenFromRedis from "../../helpers/getTokenRedis";
 import { deleteTokenFromRedis } from "../../helpers/deleteTokenFromRedis";
-
 
 export const changePassword = async (req: Request, res: Response) => {
   const userData: changePasswordDto = req.body;
-  const token = req.cookies.userId;
+  userData.token = req.body.token;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
-  const isToken = await getTokenFromRedis(token);
-
+  
+  const iat = userData.token.iat.toString();
+  
   try {
-    if (!isToken) {
-      // Manejar el caso donde el token no se encuentra en Redis
-      return res.status(401).json({ error: "Token no encontrado en Redis" });
-    }
-
-    await userService().changePassword(userData, isToken);
+    await userService().changePassword(userData);
     res.status(200).json({
       mensaje: "Contraseña cambiada con éxito",
     });
 
     // Borrar el token de la base de datos después de un cambio exitoso de contraseña
-    await deleteTokenFromRedis(token);
+    await deleteTokenFromRedis(iat);
   } catch (error: any) {
     res.status(500).json({
       error: error.message,
     });
   }
 };
+

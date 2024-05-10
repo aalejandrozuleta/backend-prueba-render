@@ -1,10 +1,10 @@
 import { client } from "../config/redisConfig";
 
-const getTokenFromRedis = async (id_user:string)=> {
+const getTokenFromRedis = async (iat: string) => {
   try {
-    const userId = await client.get(id_user);
-    return userId;
-  } catch (error:any) {
+    const token = await client.get(String(iat));
+    return token;
+  } catch (error: any) {
     throw error;
   }
 };
