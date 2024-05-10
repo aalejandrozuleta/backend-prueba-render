@@ -13,6 +13,7 @@ import { loginUserDto } from "../../interface/user/loginUserDto";
 import { validateUserDto } from "../../interface/user/validateUserDto";
 import { forgetPasswordDto } from "../../interface/user/forgetPasswordDto";
 import { changePasswordDto } from "../../interface/user/changePasswordDto";
+import { updateInformationDto } from './../../interface/user/updateInformationDto';
 
 // Definimos los mensajes de error como constantes
 const ERROR_MESSAGES = {
@@ -86,6 +87,7 @@ export default () => {
       }
     },
 
+    // Función para validar un usuario
     searchUser: async (user: validateUserDto) => {
       try {
         if (!user) {
@@ -131,6 +133,7 @@ export default () => {
       }
     },
 
+    // Función para cuando el usuario olvido su contraseña
     forgetPassword: async (user: forgetPasswordDto) => {
       try {
         // Buscar el token en la base de datos
@@ -169,6 +172,7 @@ export default () => {
       }
     },
 
+    // Función para cuando el usuario desea cambiar la contraseña
     changePassword: async (user: changePasswordDto, token:string) => {
       try {
         const decoded: any = verifyToken(token);
@@ -205,6 +209,13 @@ export default () => {
       } catch (error: any) {
         throw error;
       }
+    },
+
+    updateInformation: async (user: updateInformationDto,token:string)=>{
+      const decoded: any = verifyToken(token);
+      console.log(decoded.id);
+      user.id_user = decoded.id;
+      await UserRepositories.UpdateInformation(user);
     },
   };
 };

@@ -90,4 +90,24 @@ export default () => ({
     const values = [user.id_user, user.newPassword];
     return db.query(query, values);
   },
+
+  UpdateInformation: async (user: {
+    id_user: string;
+    name_user: string;
+    lastName_user: string;
+    country_user: string;
+    phone_user: string;
+    user_type: string;
+  }) => {
+    const query = "CALL EditUser(?,?,?,?,?,?)";
+    const values = [
+      user.id_user,
+      user.name_user,
+      user.lastName_user,
+      user.country_user,
+      user.phone_user,
+      user.user_type,
+    ];
+    return db.query(query, values);
+  },
 });

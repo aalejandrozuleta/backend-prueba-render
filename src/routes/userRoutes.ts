@@ -20,6 +20,10 @@ import { userForgetPassword } from "../middlewares/validation/user/validateForge
 import { changePassword } from "../controllers/userController/changePassword";
 import { userChangePassword } from "../middlewares/validation/user/validateChangePassword";
 
+//* -----------updateInformation
+import { updateInformation } from "../controllers/userController/updateInformation";
+import { userValidationUpdate } from "../middlewares/validation/user/validateUpdateUser";
+
 
 /**
  * @route POST /register
@@ -60,5 +64,13 @@ router.put("/forget-password",userForgetPassword,forgetPassword);
  */
 
 router.put("/changePassword",userChangePassword,changePassword);
+
+/**
+ * @route PUT / updateInformation
+ * @description Actualizar la informacion de la cuenta
+ * @access Público
+ */
+
+router.put("/update-information",userValidationUpdate,updateInformation);
 
 export default router;
